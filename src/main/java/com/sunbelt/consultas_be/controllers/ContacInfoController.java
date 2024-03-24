@@ -25,22 +25,36 @@ class ContactInfoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContactInfo> getContactById(@PathVariable int id) {
+    public ResponseEntity<?> getContactById(@PathVariable int id) {
         if (id >= 0 && id < getContactsList().size()) {
             return new ResponseEntity<>(getContactsList().get(id), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            String errorMessage = "No se encontró ningún contacto con el ID especificado: " + id;
+            return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/identification/{idNumber}")
-    public ResponseEntity<ContactInfo> getContactByIdentification(@PathVariable String idNumber) {
-        for (ContactInfo userInfo : getContactsList()) {
-            if (userInfo.getIdentificationNumber().equals(idNumber)) {
-                return new ResponseEntity<>(userInfo, HttpStatus.OK);
-            }
+    @GetMapping("/identification/{docType}/{idNumber}")
+    public ResponseEntity<?> getContactByIdentification(@PathVariable String idNumber, @PathVariable String docType) {
+        if (docType == null || docType.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El tipo de documento es obligatorio.");
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        if (!isValidIdNumber(idNumber, docType)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El número de identificación proporcionado es inválido: " + idNumber);
+        }
+
+        try {
+            for (ContactInfo userInfo : getContactsList()) {
+                if (userInfo.getIdentificationNumber().equals(idNumber)) {
+                    return new ResponseEntity<>(userInfo, HttpStatus.OK);
+                }
+            }
+            String errorMessage = "No se encontró ningún contacto con la identificación proporcionada: " + idNumber;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+        } catch (NullPointerException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error interno al procesar la solicitud.");
+        }
     }
 
     public List<ContactInfo> getContactsList() {
@@ -50,4 +64,38 @@ class ContactInfoController {
     public void setContactsList(List<ContactInfo> contactsList) {
         this.contactsList = contactsList;
     }
+
+    private boolean isValidIdNumber(String idNumber, String docType) {
+        if (idNumber == null || idNumber.isEmpty()) {
+            return false;
+        }
+
+        switch (docType) {
+            case "P":
+                if (idNumber.length() > 14) {
+                    return false;
+                }
+                for (char c : idNumber.toCharArray()) {
+                    if (!Character.isLetterOrDigit(c)) {
+                        return false;
+                    }
+                }
+                break;
+            case "C":
+                if (idNumber.length() != 10) {
+                    return false;
+                }
+                for (char c : idNumber.toCharArray()) {
+                    if (!Character.isDigit(c)) {
+                        return false;
+                    }
+                }
+                break;
+            default:
+                return false;
+        }
+
+        return true;
+    }
 }
+
