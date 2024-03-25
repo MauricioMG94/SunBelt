@@ -1,14 +1,23 @@
 package com.sunbelt.consultas_be.models;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class ContactInfo {
+    @NotBlank(message = "El primer nombre es requerido")
     private String firstName;
     private String middleName;
+    @NotBlank(message = "El primer apellido es requerido")
     private String firstLastName;
     private String secondLastName;
     private String telephoneNumber;
     private String address;
+    @NotBlank(message = "La ciudad de residencia es requerida")
     private String cityOfResidence;
+    @NotBlank(message = "El tipo de documento es requerido")
     private String documentType;
+    @NotBlank(message = "El número de identificación es requerido")
+    @Size(min = 7, max = 15, message = "El número de identificación debe tener entre 7 y 15 caracteres")
     private String identificationNumber;
 
     public ContactInfo() {
