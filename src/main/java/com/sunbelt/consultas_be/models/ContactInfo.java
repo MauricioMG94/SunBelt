@@ -11,6 +11,9 @@ public class ContactInfo {
     private String documentType;
     private String identificationNumber;
 
+    public ContactInfo() {
+    }
+
     public ContactInfo(String firstName, String middleName, String firstLastName, String secondLastName, String telephoneNumber, String address, String cityOfResidence, String documentType, String identificationNumber){
         this.firstName = firstName;
         this.middleName = middleName;
@@ -98,14 +101,15 @@ public class ContactInfo {
 
     @Override
     public String toString(){
-        return "ContactInfo{" +
-                "Primer nombre: " + firstName + '\'' +
-                ", segundo nombre: " + middleName + '\'' +
-                ", primer apellido: " + firstLastName + '\'' +
-                ", segundo apellido: " + secondLastName + '\'' +
-                ", teléfono: " + telephoneNumber + '\'' +
-                ", dirección: " + address + '\'' +
-                ", ciudad de residencia: " + cityOfResidence + '\'' +
-                "}";
+        return "Información_del_contacto = {" +
+                "\nPrimer nombre: " + firstName + ',' +
+                "\nSegundo nombre: " + middleName + ',' +
+                "\nPrimer apellido: " + firstLastName + ',' +
+                "\nSegundo apellido: " + secondLastName + ',' +
+                "\nTeléfono: " + telephoneNumber + ',' +
+                "\nDirección: " + address + ',' +
+                "\nCiudad de residencia: " + cityOfResidence + '.' +
+                "\n}";
     }
+
 }

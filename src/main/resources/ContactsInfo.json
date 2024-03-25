@@ -1,0 +1,24 @@
+[
+  {
+    "firstName": "Iván",
+    "middleName": "Mauricio",
+    "firstLastName": "Martínez",
+    "secondLastName": "Guzmán",
+    "telephoneNumber": "3186574742",
+    "address": "Calle 67 No. 6-27",
+    "cityOfResidence": "Ibagué",
+    "documentType": "C",
+    "identificationNumber": "10121314"
+  },
+  {
+    "firstName": "Myriam",
+    "middleName": null,
+    "firstLastName": "Guzmán",
+    "secondLastName": "Soler",
+    "telephoneNumber": "3102494767",
+    "address": "Calle 67 #25-38",
+    "cityOfResidence": "Ibagué",
+    "documentType": "P",
+    "identificationNumber": "AX438289"
+  }
+]

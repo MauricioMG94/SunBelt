@@ -1,10 +1,17 @@
 package com.sunbelt.consultas_be.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sunbelt.consultas_be.models.ContactInfo;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +21,12 @@ class ContactInfoController {
 
     private List<ContactInfo> contactsList = new ArrayList<>();
 
-    public ContactInfoController() {
-        contactsList.add(new ContactInfo("Iván", "Mauricio", "Martínez", "Guzmán", "3186574742", "Calle 67 No. 6-27", "Ibagué", "Cédula", "1110544233"));
-        contactsList.add(new ContactInfo("Myriam", null, "Guzmán", "Soler", "3102494767", "Calle 67 #25-38", "Ibagué", "Pasaporte", "AX438289"));
+    @Autowired
+    public ContactInfoController(@NotNull ResourceLoader resourceLoader) throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:ContactsInfo.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        contactsList = objectMapper.readValue(resource.getInputStream(), new TypeReference<List<ContactInfo>>() {});
     }
-
     @GetMapping
     public ResponseEntity<List<ContactInfo>> getAllContactsInfo() {
         return new ResponseEntity<>(getContactsList(), HttpStatus.OK);
@@ -46,7 +54,7 @@ class ContactInfoController {
 
         try {
             for (ContactInfo userInfo : getContactsList()) {
-                if (userInfo.getIdentificationNumber().equals(idNumber)) {
+                if (userInfo.getIdentificationNumber().equals(idNumber) && userInfo.getDocumentType().equals(docType)) {
                     return new ResponseEntity<>(userInfo, HttpStatus.OK);
                 }
             }
@@ -82,7 +90,7 @@ class ContactInfoController {
                 }
                 break;
             case "C":
-                if (idNumber.length() != 10) {
+                if (idNumber.length() > 10) {
                     return false;
                 }
                 for (char c : idNumber.toCharArray()) {
