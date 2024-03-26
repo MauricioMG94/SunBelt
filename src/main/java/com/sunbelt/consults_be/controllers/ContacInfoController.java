@@ -1,8 +1,9 @@
-package com.sunbelt.consultas_be.controllers;
+package com.sunbelt.consults_be.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sunbelt.consultas_be.models.ContactInfo;
+import com.sunbelt.consults_be.models.ContactInfo;
+import com.sunbelt.consults_be.models.DocumentType;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -43,8 +44,8 @@ class ContactInfoController {
     }
 
     @GetMapping("/identification/{docType}/{idNumber}")
-    public ResponseEntity<?> getContactByIdentification(@PathVariable String idNumber, @PathVariable String docType) {
-        if (docType == null || docType.isEmpty()) {
+    public ResponseEntity<?> getContactByIdentification(@PathVariable String idNumber, @PathVariable DocumentType docType) {
+        if (docType == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El tipo de documento es obligatorio.");
         }
 
@@ -73,13 +74,13 @@ class ContactInfoController {
         this.contactsList = contactsList;
     }
 
-    private boolean isValidIdNumber(String idNumber, String docType) {
+    private boolean isValidIdNumber(String idNumber, DocumentType docType) {
         if (idNumber == null || idNumber.isEmpty()) {
             return false;
         }
 
         switch (docType) {
-            case "P":
+            case P:
                 if (idNumber.length() > 14) {
                     return false;
                 }
@@ -89,7 +90,7 @@ class ContactInfoController {
                     }
                 }
                 break;
-            case "C":
+            case C:
                 if (idNumber.length() > 10) {
                     return false;
                 }

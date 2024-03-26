@@ -1,4 +1,4 @@
-package com.sunbelt.consultas_be.models;
+package com.sunbelt.consults_be.models;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,7 +15,7 @@ public class ContactInfo {
     @NotBlank(message = "La ciudad de residencia es requerida")
     private String cityOfResidence;
     @NotBlank(message = "El tipo de documento es requerido")
-    private String documentType;
+    private DocumentType documentType;
     @NotBlank(message = "El número de identificación es requerido")
     @Size(min = 7, max = 15, message = "El número de identificación debe tener entre 7 y 15 caracteres")
     private String identificationNumber;
@@ -23,7 +23,7 @@ public class ContactInfo {
     public ContactInfo() {
     }
 
-    public ContactInfo(String firstName, String middleName, String firstLastName, String secondLastName, String telephoneNumber, String address, String cityOfResidence, String documentType, String identificationNumber){
+    public ContactInfo(String firstName, String middleName, String firstLastName, String secondLastName, String telephoneNumber, String address, String cityOfResidence, DocumentType documentType, String identificationNumber){
         this.firstName = firstName;
         this.middleName = middleName;
         this.firstLastName = firstLastName;
@@ -92,11 +92,11 @@ public class ContactInfo {
         this.cityOfResidence = cityOfResidence;
     }
 
-    public String getDocumentType() {
+    public DocumentType getDocumentType() {
         return documentType;
     }
 
-    public void setDocumentType(String documentType) {
+    public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
     }
 

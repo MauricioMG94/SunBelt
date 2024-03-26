@@ -1,4 +1,4 @@
-package com.sunbelt.consultas_be;
+package com.sunbelt.consults_be;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
